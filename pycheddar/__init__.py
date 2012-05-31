@@ -439,7 +439,7 @@ class Plan(CheddarObject):
         return total < 0.000001 and total > -0.000001
         
         
-    def get_item(item_code):
+    def get_item(self, item_code):
         """Retrieve an item by item code. If the item does not exist,
         raise ValueError."""
         
@@ -572,7 +572,7 @@ class Customer(CheddarObject):
         xml = CheddarGetter.request('/customers/delete/', product_code = self._product_code, code = self._code)
         
     
-    def get_item(item_code):
+    def get_item(self, item_code):
         """Retrieve an item by item code. If the item does not exist,
         raise ValueError."""
 

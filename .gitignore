@@ -1,1 +1,6 @@
+dist
+build
+pycheddar.egg-info/
 *.pyc
+*.swp
+*.egg
