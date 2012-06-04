@@ -736,8 +736,8 @@ class Item(CheddarObject):
         # CheddarGetter inconsistently uses "quantity included" and "quantity"
         # depending on whether this is attached to a customer or a plan -- always
         # allow "quantity" here
-        if key == 'quantity' and hasattr(self, 'plan'):
-            return setattr(self, 'quantity_included', value)
+        # if key == 'quantity' and hasattr(self, 'plan'):
+        #     return setattr(self, 'quantity_included', value)
 
         # regular case
         super(Item, self).__setattr__(key, value)
@@ -748,8 +748,8 @@ class Item(CheddarObject):
 
         # intercept "quantity" and allow it to stand in for "quantity_included"
         # if this item is a member of a plan
-        if key == 'quantity' and hasattr(self, 'plan'):
-            return getattr(self, 'quantity_included')
+        # if key == 'quantity' and hasattr(self, 'plan'):
+        #     return getattr(self, 'quantity_included')
 
         # regular case
         return super(Item, self).__getattr__(key)
@@ -780,8 +780,15 @@ class Item(CheddarObject):
         # sanity check: validate first!
         self.validate()
 
+        # sanity check: has anything changed?
+        kwargs = self._build_kwargs()
+        if len(kwargs) == 0:
+            return self
+
         # okay, save to CheddarGetter
-        xml = CheddarGetter.request('/customers/set-item-quantity/', product_code = self._product_code, item_code = self.code, code = self.customer.code)
+        xml = CheddarGetter.request('/customers/set-item-quantity/',
+                product_code = self._product_code, item_code = self.code,
+                code = self.customer.code, **kwargs)
         self._load_data_from_xml(xml)
         return self
 
