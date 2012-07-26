@@ -537,7 +537,8 @@ class Customer(CheddarObject):
         if self.is_new():
             # first, get the plan code
             kwargs['subscription[plan_code]'] = self.subscription.plan.code
-            kwargs['subscription[initial_bill_date]'] = self.subscription.initial_bill_date
+            if hasattr(self.subscription, 'initial_bill_date'):
+                kwargs['subscription[initial_bill_date]'] = self.subscription.initial_bill_date
 
             # if credit card information is available in the subscription,
             # send it as well
